@@ -85,7 +85,7 @@ WifiManager interface methods:
 
 | Method | Description |
 | :-------- | :-------- |
-| [getCableFrequencyList](#method.getChannelFrequencyList) | Returns the Cable handlemode search setting list |
+| [getCableFrequencyList](#method.getCableFrequencyList) | Returns the Cable handlemode search setting list |
 | [addNewFrequency](#method.addNewFrequency) | add new search frequency |
 | [deleteFrequency](#method.deleteFrequency) | delete useless frequency |
 | [getFrequencyInfo](#method.getFrequencyInfo) | Returns frequency information like quality and level |
