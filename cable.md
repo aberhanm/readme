@@ -384,7 +384,21 @@ Returns the cable List.
 {
     "jsonrpc": "2.0",
     "id": 1234567890,
-    "method": "org.rdk.Cable.1.searchCable "
+    "method": "org.rdk.Cable.1.searchCable ",
+    "params":[
+				{
+				"id":11223
+        "frequency":"421",
+        "symbolRate":"5668",
+        "modulation":"128"
+				},
+				{
+				"id":11223
+        "frequency":"421",
+        "symbolRate":"5668",
+        "modulation":"128"
+				}
+		 ]
 }
 ```
 
@@ -395,15 +409,7 @@ Returns the cable List.
     "jsonrpc": "2.0",
     "id": 1234567890,
     "result": {
-        "result":[
-            {
-               "id":'5424',
-               "name":"cctv1",
-               "video":"gfdgyewtreg.mp4",
-               "audio":"gdheg.mp3",
-               "subtitle":"cctv1",
-            }
-        ]
+     
         "success": true
     }
 }
@@ -437,3 +443,13 @@ Triggered when finish signle frenquency search
     "params": {}
 }
 ```
+
+   "result":[
+            {
+               "id":'5424',
+               "name":"cctv1",
+               "video":"gfdgyewtreg.mp4",
+               "audio":"gdheg.mp3",
+               "subtitle":"cctv1",
+            }
+        ]
