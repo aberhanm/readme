@@ -420,6 +420,7 @@ The following events are provided by the org.rdk.Cable plugin:
 | Event | Description |
 | :-------- | :-------- |
 | [onSearchStateChanged](#event.onSearchStateChanged) | Triggered when finish signle frenquency search |
+| [onSignalStatusChange](#event.onSignalStatusChange) | Triggered when signalLevel or signalStrength change |
 
 
 <a name="event.onSearchStateChanged"></a>
@@ -447,17 +448,48 @@ Triggered when finish signle frenquency search
     "jsonrpc": "2.0",
     "id": 1234567890,
     "result": {
-      "result":[
-            {
-               "id":'5424',
-               "name":"cctv1",
-               "video":"gfdgyewtreg.mp4",
-               "audio":"gdheg.mp3",
-               "subtitle":"cctv1",
-            }
-        ]
+      "result":{
+         "id":'5424',
+          "name":"cctv1",
+          "video":"gfdgyewtreg.mp4",
+          "audio":"gdheg.mp3",
+          "subtitle":"cctv1",
+       }
+       "success": true
+    }
+}
+```
 
-        "success": true
+  <a name="event.onSignalStatusChange"></a>
+## *onSignalStatusChange <sup>event</sup>*
+
+Triggered when signalLevel or signalStrength change
+
+### Parameters
+
+
+### Example
+
+```json
+{
+    "jsonrpc": "2.0",
+    "method": "client.events.1.onSearchStateChanged",
+    "params": {}
+}
+```
+
+#### Response
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1234567890,
+    "result": {
+      "result":{
+      	 "signalLevel":90,
+	 "signalStrength":43
+      },
+      "success": true
     }
 }
 ```
