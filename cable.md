@@ -73,7 +73,7 @@ The table below lists configuration options of the plugin.
 <a name="head.Methods"></a>
 # Methods
 
-The following methods are provided by the org.rdk.Wifi plugin:
+The following methods are provided by the org.rdk.Cable plugin:
 
 WifiManager interface methods:
 
