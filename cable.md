@@ -11,7 +11,6 @@
 ### Table of Contents
 
 - [Introduction](#head.Introduction)
-- [Description](#head.Description)
 - [Configuration](#head.Configuration)
 - [Methods](#head.Methods)
 - [Notifications](#head.Notifications)
@@ -57,12 +56,7 @@ The table below provides and overview of terms and abbreviations used in this do
 | <a name="ref.JSON">[JSON](http://www.json.org/)</a> | JSON specification |
 | <a name="ref.Thunder">[Thunder](https://github.com/WebPlatformForEmbedded/Thunder/blob/master/doc/WPE%20-%20API%20-%20WPEFramework.docx)</a> | Thunder API Reference |
 
-<a name="head.Description"></a>
-# Description
 
-The `Wifi` plugin is used to manage Wifi network connections on a set-top device.
-
-The plugin is designed to be loaded and executed within the Thunder framework. For more information about the framework refer to [[Thunder](#ref.Thunder)].
 
 <a name="head.Configuration"></a>
 # Configuration
@@ -85,11 +79,11 @@ WifiManager interface methods:
 
 | Method | Description |
 | :-------- | :-------- |
-| [getCableFrequencyList](#method.getCableFrequencyList) | Returns the Cable handlemode search setting list |
+| [getCableFrequencyList](#method.getChannelFrequencyList) | Returns the Cable handlemode search setting list |
 | [addNewFrequency](#method.addNewFrequency) | add new search frequency |
 | [deleteFrequency](#method.deleteFrequency) | delete useless frequency |
-| [getFrequencyInfo](#method.getFrequencyInfo) | Returns frequency information like quality and level |
 | [updateFrequency](#method.updateFrequency) | Returns the current Wifi state |
+| [getSignalStatus](#method.getSignalStatus) | Returns frequency information like quality and level |
 | [searchCable](#method.searchCable) | Returns the show which at the all frenquency point |
 
 
@@ -108,6 +102,10 @@ This method takes no parameters.
 | :-------- | :-------- | :-------- |
 | result | object |  |
 | result.result | array | The result of the frequency list |
+| result.result[0].id| string | the frequency id|
+| result.result[0].frequency| string | the frequency |
+| result.result[0].symbolRate| string | the symbolRate |
+| result.result[0].modulation| string | the modulation |
 | result.success | boolean | Whether the request succeeded |
 
 ### Example
@@ -132,10 +130,16 @@ This method takes no parameters.
         "result": [
             {
                 "id":11111
-                "frequency":"417",
-                "symbolRate":"5017",
-                "QAM":"16"
-            }
+                "frequency" : "417",
+                "symbolRate" : "5017",
+                "modulation" : "16"
+            },
+            {
+                "id":22222
+                "frequency" : "453",
+                "symbolRate" : "5017",
+                "modulation" : "32"
+            },
         ],
         "success": true
     }
@@ -154,6 +158,7 @@ Add new frequency to cable Frequency list
 | params | object |  |
 | params.frequency | string | The new frequency |
 | params.symbolRate | string | The new symbolRate |
+| params.modulation | string | The new modulation |
 
 
 ### Result
@@ -172,7 +177,12 @@ Add new frequency to cable Frequency list
 {
     "jsonrpc": "2.0",
     "id": 1234567890,
-    "method": "org.rdk.Cable.1.addNewFrequency"
+    "method": "org.rdk.Cable.1.addNewFrequency",
+     "params": {
+        "frequency": "432",
+        "symbolRate": "432",
+        "modulation": "432",
+    }
 }
 ```
 
@@ -220,7 +230,7 @@ Attempts to delete the frequency from cable list
     "id": 1234567890,
     "method": "org.rdk.Cable.1.deleteFrequency",
     "params": {
-        "id": "123412341234",
+        "id": "4132",
     }
 }
 ```
@@ -237,23 +247,23 @@ Attempts to delete the frequency from cable list
 }
 ```
 
-<a name="method.getFrequencyInfo"></a>
-## *getFrequencyInfo <sup>method</sup>*
+<a name="method.getSignalStatus"></a>
+## *getSignalStatus <sup>method</sup>*
 
-get frequency infomation
+get signalLevel / signalStrength
 
 ### Parameters
-| Name | Type | Description |
-| :-------- | :-------- | :-------- |
-| params | object |  |
-| params.id | string | The frequency id |
+
+This method takes no parameters.
 
 ### Result
 
 | Name | Type | Description |
 | :-------- | :-------- | :-------- |
 | result | object |  |
-| result.result | object | The result of the frequency |
+| result.result | object | The result of the SignalStatus |
+| result.result.signalStrength | number | |
+| result.result.signalLevel | number | |
 | result.success | boolean | Whether the request succeeded |
 
 ### Example
@@ -264,7 +274,7 @@ get frequency infomation
 {
     "jsonrpc": "2.0",
     "id": 1234567890,
-    "method": "org.rdk.Cable.1.getFrequencyInfo"
+    "method": "org.rdk.Cable.1.getSignalStatus"
 }
 ```
 
@@ -276,10 +286,8 @@ get frequency infomation
     "id": 1234567890,
     "result": {
         "result": {
-            "id":11111
-                "frequency":"417",
-                "symbolRate":"5017",
-                "QAM":"16"
+           signalStrength:80,
+           signalLevel:55
         },
         "success": true
     }
@@ -295,9 +303,10 @@ when user change frequency infomation
 | Name | Type | Description |
 | :-------- | :-------- | :-------- |
 | params | object |  |
+| params.id | string | The change frequency id |
 | params.frequency | string | The new frequency |
 | params.symbolRate | string | The new symbolRate |
-| params.QAM | string | The new QAM |
+| params.modulation | string | The new modulation |
 
 ### Result
 
@@ -314,7 +323,13 @@ when user change frequency infomation
 {
     "jsonrpc": "2.0",
     "id": 1234567890,
-    "method": "org.rdk.Cable.1.updateFrequency"
+    "method": "org.rdk.Cable.1.updateFrequency",
+    "params":{
+        "id":11223
+        "frequency":"421",
+        "symbolRate":"5668",
+        "modulation":"128"
+     }
 }
 ```
 
@@ -356,10 +371,9 @@ Returns the cable List.
 |result.result[0]|object|
 |result.result[0].id | string | show id |
 |result.result[0].name | string | show name |
-|result.result[0].level | string | signal level |
-|result.result[0].strength | string | signal strength |
-|result.result[0].logo | string | show logo |
-|result.result[0].source | string | signal source |
+|result.result[0].video | string |  |
+|result.result[0].audio | string |  |
+|result.result[0].subtitle | string |  |
 
 
 ### Example
@@ -384,16 +398,42 @@ Returns the cable List.
         "result":[
             {
                "id":'5424',
-               "logo":'http://jdkfhl',
-               "level":39,
-               "strength":68,
-               "source":"signal 1",
-               "name":"cctv1"
+               "name":"cctv1",
+               "video":"gfdgyewtreg.mp4",
+               "audio":"gdheg.mp3",
+               "subtitle":"cctv1",
             }
         ]
         "success": true
     }
 }
 ```
+<a name="head.Notifications"></a>
+# Notifications
+
+Notifications are autonomous events, triggered by the internals of the implementation, and broadcasted via JSON-RPC to all registered observers. Refer to [[Thunder](#ref.Thunder)] for information on how to register for a notification.
+
+The following events are provided by the org.rdk.Cable plugin:
+
+| Event | Description |
+| :-------- | :-------- |
+| [onSearchStateChanged](#event.onSearchStateChanged) | Triggered when finish signle frenquency search |
 
 
+<a name="event.onSearchStateChanged"></a>
+## *onSearchStateChanged <sup>event</sup>*
+
+Triggered when finish signle frenquency search
+
+### Parameters
+
+
+### Example
+
+```json
+{
+    "jsonrpc": "2.0",
+    "method": "client.events.1.onSearchStateChanged",
+    "params": {}
+}
+```
