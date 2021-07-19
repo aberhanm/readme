@@ -414,6 +414,35 @@ Returns the cable List.
     }
 }
 ```
+<a name="head.Notifications"></a>
+# Notifications
+
+Notifications are autonomous events, triggered by the internals of the implementation, and broadcasted via JSON-RPC to all registered observers. Refer to [[Thunder](#ref.Thunder)] for information on how to register for a notification.
+
+The following events are provided by the org.rdk.Cable plugin:
+
+| Event | Description |
+| :-------- | :-------- |
+| [onSearchStateChanged](#event.onSearchStateChanged) | Triggered when finish signle frenquency search |
 
 
+<a name="event.onSearchStateChanged"></a>
+## *onSearchStateChanged <sup>event</sup>*
 
+Triggered when finish signle frenquency search
+
+### Parameters
+
+
+### Example
+
+```json
+{
+    "jsonrpc": "2.0",
+    "method": "client.events.1.onSearchStateChanged",
+    "params": {
+        "state": 2,
+        "isLNF": false
+    }
+}
+```
