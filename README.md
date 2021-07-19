@@ -130,15 +130,15 @@ This method takes no parameters.
         "result": [
             {
                 "id":11111
-                "frequency":"417",
-                "symbolRate":"5017",
-                "modulation":"16"
+                "frequency" : "417",
+                "symbolRate" : "5017",
+                "modulation" : "16"
             },
             {
                 "id":22222
-                "frequency":"453",
-                "symbolRate":"5017",
-                "modulation":"32"
+                "frequency" : "453",
+                "symbolRate" : "5017",
+                "modulation" : "32"
             },
         ],
         "success": true
