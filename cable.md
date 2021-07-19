@@ -444,7 +444,14 @@ Triggered when finish signle frenquency search
 }
 ```
 
-   "result":[
+#### Response
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1234567890,
+    "result": {
+      "result":[
             {
                "id":'5424',
                "name":"cctv1",
@@ -453,3 +460,9 @@ Triggered when finish signle frenquency search
                "subtitle":"cctv1",
             }
         ]
+
+        "success": true
+    }
+}
+```
+  
