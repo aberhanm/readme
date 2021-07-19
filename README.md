@@ -396,4 +396,63 @@ Returns the cable List.
 }
 ```
 
+<a name="method.connetcable"></a>
+## *connetcable <sup>method</sup>*
+
+connect the cable source  
+  
+### Parameters
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| params | string |  |
+| params.id| string | cable id
+
+
+
+### Result
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| result | object |  |
+| result.result | object |  |
+|result.result.id | string | show id |
+|result.result.name | string | show name |
+|result.result.level | string | signal level |
+|result.result.strength | string | signal strength |
+|result.result.logo | string | show logo |
+|result.result.source | string | signal source |
+
+
+### Example
+
+#### Request
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1234567890,
+    "method": "org.rdk.Cable.1.connetcable "
+}
+```
+
+#### Response
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1234567890,
+    "result": {
+             "id":'5424',
+             "logo":'http://jdkfhl',
+             "level":39,
+             "strength":68,
+             "source":"signal 1",
+              "name":"cctv1"
+        }
+        "success": true
+    }
+}
+```
+
 
