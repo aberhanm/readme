@@ -405,7 +405,6 @@ Returns the cable List.
     "jsonrpc": "2.0",
     "id": 1234567890,
     "result": {
-     
         "success": true
     }
 }
