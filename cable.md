@@ -21,7 +21,7 @@
 <a name="head.Scope"></a>
 ## Scope
 
-This document describes purpose and functionality of the org.rdk.channel plugin. It includes detailed specification about its configuration, methods provided and notifications sent.
+This document describes purpose and functionality of the org.rdk.Cable plugin. It includes detailed specification about its configuration, methods provided and notifications sent.
 
 <a name="head.Case_Sensitivity"></a>
 ## Case Sensitivity
