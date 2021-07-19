@@ -472,7 +472,7 @@ Triggered when signalLevel or signalStrength change
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "client.events.1.onSearchStateChanged",
+    "method": "client.events.1.onSignalStatusChange",
     "params": {}
 }
 ```
