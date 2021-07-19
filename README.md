@@ -440,9 +440,6 @@ Triggered when finish signle frenquency search
 {
     "jsonrpc": "2.0",
     "method": "client.events.1.onSearchStateChanged",
-    "params": {
-        "state": 2,
-        "isLNF": false
-    }
+    "params": {}
 }
 ```
