@@ -88,8 +88,8 @@ WifiManager interface methods:
 | [getCableFrequencyList](#method.getChannelFrequencyList) | Returns the Cable handlemode search setting list |
 | [addNewFrequency](#method.addNewFrequency) | add new search frequency |
 | [deleteFrequency](#method.deleteFrequency) | delete useless frequency |
-| [getFrequencyInfo](#method.getFrequencyInfo) | Returns frequency information like quality and level |
 | [updateFrequency](#method.updateFrequency) | Returns the current Wifi state |
+| [getSignalStatus](#method.getSignalStatus) | Returns frequency information like quality and level |
 | [searchCable](#method.searchCable) | Returns the show which at the all frenquency point |
 
 
@@ -108,6 +108,10 @@ This method takes no parameters.
 | :-------- | :-------- | :-------- |
 | result | object |  |
 | result.result | array | The result of the frequency list |
+| result.result[0].id| string | the frequency id|
+| result.result[0].frequency| string | the frequency |
+| result.result[0].symbolRate| string | the symbolRate |
+| result.result[0].modulation| string | the modulation |
 | result.success | boolean | Whether the request succeeded |
 
 ### Example
@@ -134,8 +138,14 @@ This method takes no parameters.
                 "id":11111
                 "frequency":"417",
                 "symbolRate":"5017",
-                "QAM":"16"
-            }
+                "modulation":"16"
+            },
+            {
+                "id":22222
+                "frequency":"453",
+                "symbolRate":"5017",
+                "modulation":"32"
+            },
         ],
         "success": true
     }
@@ -154,6 +164,7 @@ Add new frequency to cable Frequency list
 | params | object |  |
 | params.frequency | string | The new frequency |
 | params.symbolRate | string | The new symbolRate |
+| params.modulation | string | The new modulation |
 
 
 ### Result
@@ -172,7 +183,12 @@ Add new frequency to cable Frequency list
 {
     "jsonrpc": "2.0",
     "id": 1234567890,
-    "method": "org.rdk.Cable.1.addNewFrequency"
+    "method": "org.rdk.Cable.1.addNewFrequency",
+     "params": {
+        "frequency": "432",
+        "symbolRate": "432",
+        "modulation": "432",
+    }
 }
 ```
 
@@ -220,7 +236,7 @@ Attempts to delete the frequency from cable list
     "id": 1234567890,
     "method": "org.rdk.Cable.1.deleteFrequency",
     "params": {
-        "id": "123412341234",
+        "id": "4132",
     }
 }
 ```
@@ -237,23 +253,23 @@ Attempts to delete the frequency from cable list
 }
 ```
 
-<a name="method.getFrequencyInfo"></a>
-## *getFrequencyInfo <sup>method</sup>*
+<a name="method.getSignalStatus"></a>
+## *getSignalStatus <sup>method</sup>*
 
-get frequency infomation
+get signalLevel / signalStrength
 
 ### Parameters
-| Name | Type | Description |
-| :-------- | :-------- | :-------- |
-| params | object |  |
-| params.id | string | The frequency id |
+
+This method takes no parameters.
 
 ### Result
 
 | Name | Type | Description |
 | :-------- | :-------- | :-------- |
 | result | object |  |
-| result.result | object | The result of the frequency |
+| result.result | object | The result of the SignalStatus |
+| result.result.signalStrength | number | |
+| result.result.signalLevel | number | |
 | result.success | boolean | Whether the request succeeded |
 
 ### Example
@@ -264,7 +280,7 @@ get frequency infomation
 {
     "jsonrpc": "2.0",
     "id": 1234567890,
-    "method": "org.rdk.Cable.1.getFrequencyInfo"
+    "method": "org.rdk.Cable.1.getSignalStatus"
 }
 ```
 
@@ -276,10 +292,8 @@ get frequency infomation
     "id": 1234567890,
     "result": {
         "result": {
-            "id":11111
-                "frequency":"417",
-                "symbolRate":"5017",
-                "QAM":"16"
+           signalStrength:80,
+           signalLevel:55
         },
         "success": true
     }
@@ -295,9 +309,10 @@ when user change frequency infomation
 | Name | Type | Description |
 | :-------- | :-------- | :-------- |
 | params | object |  |
+| params.id | string | The change frequency id |
 | params.frequency | string | The new frequency |
 | params.symbolRate | string | The new symbolRate |
-| params.QAM | string | The new QAM |
+| params.modulation | string | The new modulation |
 
 ### Result
 
@@ -314,7 +329,13 @@ when user change frequency infomation
 {
     "jsonrpc": "2.0",
     "id": 1234567890,
-    "method": "org.rdk.Cable.1.updateFrequency"
+    "method": "org.rdk.Cable.1.updateFrequency",
+    "params":{
+        "id":11223
+        "frequency":"421",
+        "symbolRate":"5668",
+        "modulation":"128"
+     }
 }
 ```
 
@@ -356,10 +377,9 @@ Returns the cable List.
 |result.result[0]|object|
 |result.result[0].id | string | show id |
 |result.result[0].name | string | show name |
-|result.result[0].level | string | signal level |
-|result.result[0].strength | string | signal strength |
-|result.result[0].logo | string | show logo |
-|result.result[0].source | string | signal source |
+|result.result[0].video | string |  |
+|result.result[0].audio | string |  |
+|result.result[0].subtitle | string |  |
 
 
 ### Example
@@ -384,11 +404,10 @@ Returns the cable List.
         "result":[
             {
                "id":'5424',
-               "logo":'http://jdkfhl',
-               "level":39,
-               "strength":68,
-               "source":"signal 1",
-               "name":"cctv1"
+               "name":"cctv1",
+               "video":"gfdgyewtreg.mp4",
+               "audio":"gdheg.mp3",
+               "subtitle":"cctv1",
             }
         ]
         "success": true
@@ -396,63 +415,5 @@ Returns the cable List.
 }
 ```
 
-<a name="method.connetcable"></a>
-## *connetcable <sup>method</sup>*
-
-connect the cable source  
-  
-### Parameters
-
-| Name | Type | Description |
-| :-------- | :-------- | :-------- |
-| params | string |  |
-| params.id| string | cable id
-
-
-
-### Result
-
-| Name | Type | Description |
-| :-------- | :-------- | :-------- |
-| result | object |  |
-| result.result | object |  |
-|result.result.id | string | show id |
-|result.result.name | string | show name |
-|result.result.level | string | signal level |
-|result.result.strength | string | signal strength |
-|result.result.logo | string | show logo |
-|result.result.source | string | signal source |
-
-
-### Example
-
-#### Request
-
-```json
-{
-    "jsonrpc": "2.0",
-    "id": 1234567890,
-    "method": "org.rdk.Cable.1.connetcable "
-}
-```
-
-#### Response
-
-```json
-{
-    "jsonrpc": "2.0",
-    "id": 1234567890,
-    "result": {
-             "id":'5424',
-             "logo":'http://jdkfhl',
-             "level":39,
-             "strength":68,
-             "source":"signal 1",
-              "name":"cctv1"
-        }
-        "success": true
-    }
-}
-```
 
 
