@@ -357,23 +357,19 @@ Returns the cable List.
 | :-------- | :-------- | :-------- |
 | params | array |  |
 | params[0] | object |  |
-| params[0].frequency | string |  |
-| params[0].symbolrate | string |  |
-| params[0].qam | string |  |
+|result.params[0].id | string | show id |
+|result.params[0].frequency | string | show name |
+|result.params[0].symbolRate | string |  |
+|result.params[0].mofulation | string |  |
 
 
 ### Result
 
 | Name | Type | Description |
 | :-------- | :-------- | :-------- |
-| result | array |  |
-| result.result | array |  |
-|result.result[0]|object|
-|result.result[0].id | string | show id |
-|result.result[0].name | string | show name |
-|result.result[0].video | string |  |
-|result.result[0].audio | string |  |
-|result.result[0].subtitle | string |  |
+| result | object |  |
+| result.result | object |  |
+
 
 
 ### Example
@@ -386,19 +382,19 @@ Returns the cable List.
     "id": 1234567890,
     "method": "org.rdk.Cable.1.searchCable ",
     "params":[
-				{
-				"id":11223
+	{
+	"id":11223
         "frequency":"421",
         "symbolRate":"5668",
         "modulation":"128"
-				},
-				{
-				"id":11223
+	},
+	{
+	"id":11223
         "frequency":"421",
         "symbolRate":"5668",
         "modulation":"128"
-				}
-		 ]
+	}
+     ]
 }
 ```
 
