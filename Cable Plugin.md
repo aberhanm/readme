@@ -75,7 +75,7 @@ The table below lists configuration options of the plugin.
 
 The following methods are provided by the org.rdk.Cable plugin:
 
-WifiManager interface methods:
+channelManager interface methods:
 
 | Method | Description |
 | :-------- | :-------- |
