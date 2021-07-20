@@ -79,7 +79,7 @@ WifiManager interface methods:
 
 | Method | Description |
 | :-------- | :-------- |
-| [getCableFrequencyList](#method.getChannelFrequencyList) | Returns the Cable handlemode search setting list |
+| [getFrequencyList](#method.getFrequencyList) | Returns the frequency list from cable/sat/T |
 | [addNewFrequency](#method.addNewFrequency) | add new search frequency |
 | [deleteFrequency](#method.deleteFrequency) | delete useless frequency |
 | [updateFrequency](#method.updateFrequency) | Returns the current Wifi state |
@@ -87,14 +87,17 @@ WifiManager interface methods:
 | [searchCable](#method.searchCable) | Returns the show which at the all frenquency point |
 
 
-<a name="method.getCableFrequencyList"></a>
-## *getCableFrequencyList <sup>method</sup>*
+<a name="method.getFrequencyList"></a>
+## *getFrequencyList <sup>method</sup>*
 
-get cable frequency list that returns the default data or the data saved by the user
+Returns the frequency list from cable/sat/T or the data saved by the user
 
 ### Parameters
 
-This method takes no parameters.
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| params | object |  |
+| params.frequencyType | string/null | cable/sat/T  default return cable frequencyList |
 
 ### Result
 
@@ -104,8 +107,11 @@ This method takes no parameters.
 | result.result | array | The result of the frequency list |
 | result.result[0].id| string | the frequency id|
 | result.result[0].frequency| string | the frequency |
+| result.result[0].frequency_unit| string | the frequency unit|
 | result.result[0].symbolRate| string | the symbolRate |
+| result.result[0].symbolRate_unit| string | the symbolRate unit|
 | result.result[0].modulation| string | the modulation |
+| result.result[0].modulation_unit| string | the modulation unit |
 | result.success | boolean | Whether the request succeeded |
 
 ### Example
@@ -132,13 +138,19 @@ This method takes no parameters.
                 "id":11111
                 "frequency" : "417",
                 "symbolRate" : "5017",
-                "modulation" : "16"
+                "modulation" : "16",
+		"frequency_unit" : "Mhz",
+		"symbolRate_unit" : "ks/s",
+		"modulation_unit" : "QAM"
             },
             {
-                "id":22222
-                "frequency" : "453",
+                "id":222222
+                "frequency" : "417",
                 "symbolRate" : "5017",
-                "modulation" : "32"
+                "modulation" : "16",
+		"frequency_unit" : "Mhz",
+		"symbolRate_unit" : "ks/s",
+		"modulation_unit" : "QAM"
             },
         ],
         "success": true
@@ -156,8 +168,9 @@ Add new frequency to cable Frequency list
 | Name | Type | Description |
 | :-------- | :-------- | :-------- |
 | params | object |  |
-| params.frequency | string | The new frequency |
-| params.symbolRate | string | The new symbolRate |
+| params.type | string | type to add new frequency cable/sat/T  |
+| params.frequency | string | The new frequency  ex: range 0~5000 |
+| params.symbolRate | string | The new symbolRate ex: range 0~5000 |
 | params.modulation | string | The new modulation |
 
 
@@ -179,6 +192,7 @@ Add new frequency to cable Frequency list
     "id": 1234567890,
     "method": "org.rdk.Cable.1.addNewFrequency",
      "params": {
+     	"type":"sat",
         "frequency": "432",
         "symbolRate": "432",
         "modulation": "432",
@@ -250,7 +264,7 @@ Attempts to delete the frequency from cable list
 <a name="method.getSignalStatus"></a>
 ## *getSignalStatus <sup>method</sup>*
 
-get signalLevel / signalStrength
+get signalLevel / signalQuality
 
 ### Parameters
 
@@ -262,7 +276,8 @@ This method takes no parameters.
 | :-------- | :-------- | :-------- |
 | result | object |  |
 | result.result | object | The result of the SignalStatus |
-| result.result.signalStrength | number | |
+| result.result.isLocked | boolean | |
+| result.result.signalQuality | number | |
 | result.result.signalLevel | number | |
 | result.success | boolean | Whether the request succeeded |
 
@@ -344,8 +359,33 @@ when user change frequency infomation
     }
 }
 ```
+<a name="method.startSearch"></a>
+## *startSearch <sup>method</sup>*
 
-<a name="method.searchCable"></a>
+set some search config
+
+### Parameters
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| params | array |  |
+| params[0] | object |  |
+|result.params[0].NIT | boolean | on/off NIT |
+|result.params[0].searchType | string | TV/Radio |
+|result.params[0].encryption | string | Ftv/Scramble |
+
+
+### Result
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| result | object |  |
+| result.success | boolean | Whether the request succeeded |
+
+
+
+
+<a name="method.search"></a>
 ## *searchCable <sup>method</sup>*
 
 Returns the cable List.  
@@ -409,6 +449,23 @@ Returns the cable List.
     }
 }
 ```
+<a name="method.stopSearch"></a>
+## *stopSearch <sup>method</sup>*
+
+stopsearch
+
+### Parameters
+this method takes no params
+
+
+### Result
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| result | object |  |
+| result.success | boolean | Whether the request succeeded |
+
+
 <a name="head.Notifications"></a>
 # Notifications
 
@@ -419,7 +476,7 @@ The following events are provided by the org.rdk.Cable plugin:
 | Event | Description |
 | :-------- | :-------- |
 | [onSearchStateChanged](#event.onSearchStateChanged) | Triggered when finish signle frenquency search |
-| [onSignalStatusChange](#event.onSignalStatusChange) | Triggered when signalLevel or signalStrength change |
+
 
 
 <a name="event.onSearchStateChanged"></a>
@@ -459,37 +516,5 @@ Triggered when finish signle frenquency search
 }
 ```
 
-  <a name="event.onSignalStatusChange"></a>
-## *onSignalStatusChange <sup>event</sup>*
 
-Triggered when signalLevel or signalStrength change
-
-### Parameters
-
-
-### Example
-
-```json
-{
-    "jsonrpc": "2.0",
-    "method": "client.events.1.onSignalStatusChange",
-    "params": {}
-}
-```
-
-#### Response
-
-```json
-{
-    "jsonrpc": "2.0",
-    "id": 1234567890,
-    "result": {
-      "result":{
-      	 "signalLevel":90,
-	 "signalStrength":43
-      },
-      "success": true
-    }
-}
-```
   
