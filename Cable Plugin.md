@@ -204,13 +204,13 @@ Add new frequency to cable Frequency list
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "id": 1234567890,
-    "result": {
-        "result": 0,
-        "id":222222
-        "success": true
-    }
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": {
+    "result": 0,
+    "id":222222,
+    "success": true
+  }
 }
 ```
 
@@ -240,12 +240,12 @@ Attempts to delete the frequency from cable list
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "id": 1234567890,
-    "method": "org.rdk.Cable.1.deleteFrequency",
-    "params": {
-        "id": "4132",
-    }
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "method": "org.rdk.Cable.1.deleteFrequency",
+  "params": {
+    "id": "4132",
+  }
 }
 ```
 
@@ -253,11 +253,11 @@ Attempts to delete the frequency from cable list
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "id": 1234567890,
-    "result": {
-        "success": true
-    }
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": {
+    "success": true
+  }
 }
 ```
 
@@ -287,9 +287,9 @@ This method takes no parameters.
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "id": 1234567890,
-    "method": "org.rdk.Cable.1.getSignalStatus"
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "method": "org.rdk.Cable.1.getSignalStatus"
 }
 ```
 
@@ -297,15 +297,15 @@ This method takes no parameters.
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "id": 1234567890,
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": {
     "result": {
-        "result": {
-           signalStrength:80,
-           signalLevel:55
-        },
-        "success": true
-    }
+      "signalStrength":80,
+      "signalLevel":55
+    },
+  "success": true
+  }
 }
 ```
 
@@ -336,15 +336,15 @@ when user change frequency infomation
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "id": 1234567890,
-    "method": "org.rdk.Cable.1.updateFrequency",
-    "params":{
-        "id":11223
-        "frequency":"421",
-        "symbolRate":"5668",
-        "modulation":"128"
-     }
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "method": "org.rdk.Cable.1.updateFrequency",
+  "params":{
+    "id":11223,
+    "frequency":"421",
+    "symbolRate":"5668",
+    "modulation":"128"
+  }
 }
 ```
 
@@ -352,11 +352,11 @@ when user change frequency infomation
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "id": 1234567890,
-    "result": {
-        "success": true
-    }
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": {
+    "success": true
+  }
 }
 ```
 <a name="method.startSearch"></a>
@@ -418,23 +418,23 @@ Returns the cable List.
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "id": 1234567890,
-    "method": "org.rdk.Cable.1.searchCable ",
-    "params":[
-	{
-	"id":11223
-        "frequency":"421",
-        "symbolRate":"5668",
-        "modulation":"128"
-	},
-	{
-	"id":11223
-        "frequency":"421",
-        "symbolRate":"5668",
-        "modulation":"128"
-	}
-     ]
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "method": "org.rdk.Cable.1.searchCable ",
+  "params":[
+    {
+      "id":11223,
+      "frequency":"421",
+      "symbolRate":"5668",
+      "modulation":"128"
+    },
+    {
+      "id":11223,
+      "frequency":"421",
+      "symbolRate":"5668",
+      "modulation":"128"
+    }
+  ]
 }
 ```
 
@@ -442,11 +442,11 @@ Returns the cable List.
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "id": 1234567890,
-    "result": {
-        "success": true
-    }
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": {
+    "success": true
+  }
 }
 ```
 <a name="method.stopSearch"></a>
@@ -491,9 +491,9 @@ Triggered when finish signle frenquency search
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "method": "client.events.1.onSearchStateChanged",
-    "params": {}
+  "jsonrpc": "2.0",
+  "method": "client.events.1.onSearchStateChanged",
+  "params": {}
 }
 ```
 
@@ -501,18 +501,18 @@ Triggered when finish signle frenquency search
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "id": 1234567890,
-    "result": {
-      "result":{
-         "id":'5424',
-          "name":"cctv1",
-          "video":"gfdgyewtreg.mp4",
-          "audio":"gdheg.mp3",
-          "subtitle":"cctv1",
-       }
-       "success": true
-    }
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": {
+    "result":{
+      "id":"5424",
+      "name":"cctv1",
+      "video":"gfdgyewtreg.mp4",
+      "audio":"gdheg.mp3",
+      "subtitle":"cctv1",
+    },
+    "success": true
+  }
 }
 ```
 
