@@ -134,24 +134,24 @@ Returns the frequency list from cable/sat/T or the data saved by the user
     "id": 1234567890,
     "result": {
         "result": [
-            {
-                "id":11111
-                "frequency" : "417",
-                "symbolRate" : "5017",
-                "modulation" : "16",
-		"frequency_unit" : "Mhz",
-		"symbolRate_unit" : "ks/s",
-		"modulation_unit" : "QAM"
-            },
-            {
-                "id":222222
-                "frequency" : "417",
-                "symbolRate" : "5017",
-                "modulation" : "16",
-		"frequency_unit" : "Mhz",
-		"symbolRate_unit" : "ks/s",
-		"modulation_unit" : "QAM"
-            },
+					{
+						"id":11111,
+						"frequency" : "417",
+						"symbolRate" : "5017",
+						"modulation" : "16",
+						"frequency_unit" : "Mhz",
+						"symbolRate_unit" : "ks/s",
+						"modulation_unit" : "QAM"
+					},
+          {
+						"id":222222,
+						"frequency" : "417",
+						"symbolRate" : "5017",
+						"modulation" : "16",
+						"frequency_unit" : "Mhz",
+						"symbolRate_unit" : "ks/s",
+						"modulation_unit" : "QAM"
+          },
         ],
         "success": true
     }
@@ -191,11 +191,11 @@ Add new frequency to cable Frequency list
     "jsonrpc": "2.0",
     "id": 1234567890,
     "method": "org.rdk.Cable.1.addNewFrequency",
-     "params": {
-     	"type":"sat",
-        "frequency": "432",
-        "symbolRate": "432",
-        "modulation": "432",
+		"params": {
+			"type":"sat",
+			"frequency": "432",
+			"symbolRate": "432",
+			"modulation": "432",
     }
 }
 ```
@@ -207,9 +207,9 @@ Add new frequency to cable Frequency list
     "jsonrpc": "2.0",
     "id": 1234567890,
     "result": {
-        "result": 0,
-        "id":222222
-        "success": true
+			"result": 0,
+			"id":222222,
+			"success": true
     }
 }
 ```
@@ -244,7 +244,7 @@ Attempts to delete the frequency from cable list
     "id": 1234567890,
     "method": "org.rdk.Cable.1.deleteFrequency",
     "params": {
-        "id": "4132",
+			"id": "4132",
     }
 }
 ```
@@ -256,7 +256,7 @@ Attempts to delete the frequency from cable list
     "jsonrpc": "2.0",
     "id": 1234567890,
     "result": {
-        "success": true
+			"success": true
     }
 }
 ```
@@ -300,11 +300,11 @@ This method takes no parameters.
     "jsonrpc": "2.0",
     "id": 1234567890,
     "result": {
-        "result": {
-           signalStrength:80,
-           signalLevel:55
-        },
-        "success": true
+			"result": {
+				"signalStrength":80,
+				"signalLevel":55
+			},
+			"success": true
     }
 }
 ```
@@ -340,11 +340,11 @@ when user change frequency infomation
     "id": 1234567890,
     "method": "org.rdk.Cable.1.updateFrequency",
     "params":{
-        "id":11223
-        "frequency":"421",
-        "symbolRate":"5668",
-        "modulation":"128"
-     }
+			"id":11223,
+			"frequency":"421",
+			"symbolRate":"5668",
+			"modulation":"128"
+    }
 }
 ```
 
@@ -355,7 +355,7 @@ when user change frequency infomation
     "jsonrpc": "2.0",
     "id": 1234567890,
     "result": {
-        "success": true
+			"success": true
     }
 }
 ```
@@ -422,19 +422,19 @@ Returns the cable List.
     "id": 1234567890,
     "method": "org.rdk.Cable.1.searchCable ",
     "params":[
-	{
-	"id":11223
+			{
+				"id":11223,
         "frequency":"421",
         "symbolRate":"5668",
         "modulation":"128"
-	},
-	{
-	"id":11223
+			},
+			{
+				"id":11223,
         "frequency":"421",
         "symbolRate":"5668",
         "modulation":"128"
-	}
-     ]
+			}
+    ]
 }
 ```
 
@@ -445,7 +445,7 @@ Returns the cable List.
     "jsonrpc": "2.0",
     "id": 1234567890,
     "result": {
-        "success": true
+			"success": true
     }
 }
 ```
@@ -504,14 +504,14 @@ Triggered when finish signle frenquency search
     "jsonrpc": "2.0",
     "id": 1234567890,
     "result": {
-      "result":{
-         "id":'5424',
-          "name":"cctv1",
-          "video":"gfdgyewtreg.mp4",
-          "audio":"gdheg.mp3",
-          "subtitle":"cctv1",
-       }
-       "success": true
+			"result":{
+				"id":"5424",
+				"name":"cctv1",
+				"video":"gfdgyewtreg.mp4",
+				"audio":"gdheg.mp3",
+				"subtitle":"cctv1",
+      },
+			"success": true
     }
 }
 ```
