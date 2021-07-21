@@ -84,7 +84,11 @@ WifiManager interface methods:
 | [deleteFrequency](#method.deleteFrequency) | delete useless frequency |
 | [updateFrequency](#method.updateFrequency) | Returns the current Wifi state |
 | [getSignalStatus](#method.getSignalStatus) | Returns frequency information like quality and level |
-| [searchCable](#method.searchCable) | Returns the show which at the all frenquency point |
+| [createSearch](#method.createSearch) | Returns the searchID used for mutil Tuner |
+| [setSearchParam](#method.setSearchParam) | set Search Config |
+| [startSearch](#method.startSearch) |  |
+| [stopSearch](#method.stopSearch) | |
+| [destorySearch](#method.destorySearch) | |
 
 
 <a name="method.getFrequencyList"></a>
@@ -98,6 +102,7 @@ Returns the frequency list from cable/sat/T or the data saved by the user
 | :-------- | :-------- | :-------- |
 | params | object |  |
 | params.type | string/null | C/S/T  default return cable frequencyList |
+| params.SatId| string | required when type is S/T |
 
 ### Result
 
@@ -106,16 +111,12 @@ Returns the frequency list from cable/sat/T or the data saved by the user
 | result | object |  |
 | result.result | array | The result of the frequency list |
 | result.result[0].id| string | the frequency id |
-| result.result[0].SatId| string | required when type is S |
 | result.result[0].frequency| string | the frequency |
 | result.result[0].frequency_unit| string | the frequency unit Khz、Mhz、Ghz|
 | result.result[0].symbolRate| string | the symbolRate |
 | result.result[0].symbolRate_unit| string | the symbolRate unit MS/s、MB/s、Ks/s|
 | result.result[0].modulation| string | the modulation |
 | result.result[0].modulation_unit| string | the modulation unit QAM |
-<!-- | result.result[0].pol| string |required when type is S. the SAT Polarization  LEFT/RIGHT/HOR/VER |
-| result.result[0].mode| string | actual FE Type detecting Mode. AUTO |
-| result.result[0].hierarchy| string | hierarchy info |-->
 | result.success | boolean | Whether the request succeeded | 
 
 ### Example
@@ -333,7 +334,7 @@ get signaStrength / signalQuality in dB/dBuV or percentag
 | Name | Type | Description |
 | :-------- | :-------- | :-------- |
 | params | object |  |
-| params.TunerID | number | TunerID|
+| params.TunerID | number | TunerID (0,1,2,3...)|
 
 ### Result
 
@@ -383,9 +384,58 @@ get signaStrength / signalQuality in dB/dBuV or percentag
 }
 ```
 
+<a name="method.createSearch"></a>
+## *createSearch <sup>method</sup>*
 
-<a name="method.startSearch"></a>
-## *startSearch <sup>method</sup>*
+Returns the searchID used for mutil Tuner
+
+### Parameters
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| params | object |  |
+| params.type| string | S/C/T  |
+
+
+
+### Result
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| result | object |  |
+| result.searchID | string |   |
+| result.success | boolean | Whether the request succeeded |
+
+### Example
+
+#### Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "method": "org.rdk.Cable.1.createSearch",
+  "params":{
+    "type":"C"
+  }
+}
+```
+
+#### Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": {
+    "searchID":"156165",
+    "success": true
+  }
+}
+```
+
+<a name="method.setSearchParam"></a>
+## *setSearchParam <sup>method</sup>*
 
 set some search config
 
@@ -393,11 +443,23 @@ set some search config
 
 | Name | Type | Description |
 | :-------- | :-------- | :-------- |
-| params | array |  |
-| params[0] | object |  |
-|result.params[0].NIT | boolean | on/off NIT |
-|result.params[0].searchType | string | TV/Radio |
-|result.params[0].encryption | string | Ftv/Scramble |
+| params | object |  |
+| params.searchID | string |  |
+| params.searchConfig | object |  |
+| params.searchConfig.searchMode | string | //Nit/manual/Auto |
+| params.searchConfig.serviceType | string | //TV/Radio/All |
+| params.searchConfig.scrambleMode | string | //Free/Scramble/All |
+| params.searchConfig.satelliteDegree | number | 0~3600 |
+| params.searchConfig.motorPosition | string | Motor Position. 0、1、2.... |
+| params.searchConfig.motorType | string | 0- NONE / 1-1.2 /2-1.3 Motor Type. |
+| params.searchConfig.LNB | string |  |
+| params.searchConfig.DiSEqCType | number | DiSEqC Type 0- NONE / 1-toneburst / 2-1.0 / 3-1.1. |
+| params.searchConfig.DiSEqCPort | number |  DiSEqC Port.1,2,3,4.. |
+| params.searchConfig.SwitchPower | number |  switch voltage. 0-off 1-13v/2-14v/3-18v/4-19v*/ |
+| params.searchConfig.22K | number | 22KHZ Switch 0-Disable，1-Enable. |
+| params.searchConfig.TunerConnect | string  |
+| params.searchConfig.TunerIndex | string |  |
+| params.searchConfig.NetName | string |  |
 
 
 ### Result
@@ -407,14 +469,46 @@ set some search config
 | result | object |  |
 | result.success | boolean | Whether the request succeeded |
 
+### Example
 
+#### Request
 
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "method": "org.rdk.Cable.1.setSearchParam",
+  "params":{
+    "searchID":"4654546",
+    "searchConfig":{
+      "LNB":"12316",
+      "DiSEqCType":1,
+      "DiSEqCPort":1,
+      "22K":0,
+      "nit":0,
+      "serviceType":"all",
+      ...
+    }
+  }
+}
+```
 
-<a name="method.search"></a>
-## *searchCable <sup>method</sup>*
+#### Response
 
-Returns the cable List.  
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": {
+    "success": true
+  }
+}
+```
 
+<a name="method.startSearch"></a>
+## *startSearch <sup>method</sup>*
+
+Returns the channel List.  
 
 ### Parameters
 
@@ -422,11 +516,10 @@ Returns the cable List.
 | :-------- | :-------- | :-------- |
 | params | array |  |
 | params[0] | object |  |
-|result.params[0].id | string | show id |
-|result.params[0].frequency | string | show name |
-|result.params[0].symbolRate | string |  |
-|result.params[0].mofulation | string |  |
-
+| result.params[0].id | string | frequency id |
+| result.params[0].frequency | string | |
+| result.params[0].symbolRate | string |  |
+| result.params[0].mofulation | string |  |
 
 ### Result
 
@@ -434,7 +527,6 @@ Returns the cable List.
 | :-------- | :-------- | :-------- |
 | result | object |  |
 | result.result | object |  |
-
 
 
 ### Example
@@ -445,7 +537,7 @@ Returns the cable List.
 {
   "jsonrpc": "2.0",
   "id": 1234567890,
-  "method": "org.rdk.Cable.1.searchCable ",
+  "method": "org.rdk.Cable.1.startSearch ",
   "params":[
     {
       "id":11223,
@@ -474,14 +566,18 @@ Returns the cable List.
   }
 }
 ```
+
 <a name="method.stopSearch"></a>
 ## *stopSearch <sup>method</sup>*
 
 stopsearch
 
 ### Parameters
-this method takes no params
 
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| params | object |  |
+| params.searchID | string | searchID |
 
 ### Result
 
@@ -490,6 +586,30 @@ this method takes no params
 | result | object |  |
 | result.success | boolean | Whether the request succeeded |
 
+#### Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "method": "org.rdk.Cable.1.stopSearch ",
+  "params":{
+    "searchID":"15646"
+  }
+}
+```
+
+#### Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": {
+    "success": true
+  }
+}
+```
 
 <a name="head.Notifications"></a>
 # Notifications
@@ -503,14 +623,12 @@ The following events are provided by the org.rdk.Cable plugin:
 | [onSearchStateChanged](#event.onSearchStateChanged) | Triggered when finish signle frenquency search |
 
 
-
 <a name="event.onSearchStateChanged"></a>
 ## *onSearchStateChanged <sup>event</sup>*
 
 Triggered when finish signle frenquency search
 
 ### Parameters
-
 
 ### Example
 
