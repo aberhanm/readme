@@ -97,7 +97,7 @@ Returns the frequency list from cable/sat/T or the data saved by the user
 | Name | Type | Description |
 | :-------- | :-------- | :-------- |
 | params | object |  |
-| params.frequencyType | string/null | cable/sat/T  default return cable frequencyList |
+| params.type | string/null | C/S/T  default return cable frequencyList |
 
 ### Result
 
@@ -105,14 +105,18 @@ Returns the frequency list from cable/sat/T or the data saved by the user
 | :-------- | :-------- | :-------- |
 | result | object |  |
 | result.result | array | The result of the frequency list |
-| result.result[0].id| string | the frequency id|
+| result.result[0].id| string | the frequency id |
+| result.result[0].SatId| string | required when type is S |
 | result.result[0].frequency| string | the frequency |
-| result.result[0].frequency_unit| string | the frequency unit|
+| result.result[0].frequency_unit| string | the frequency unit Khz、Mhz、Ghz|
 | result.result[0].symbolRate| string | the symbolRate |
-| result.result[0].symbolRate_unit| string | the symbolRate unit|
+| result.result[0].symbolRate_unit| string | the symbolRate unit MS/s、MB/s、Ks/s|
 | result.result[0].modulation| string | the modulation |
-| result.result[0].modulation_unit| string | the modulation unit |
-| result.success | boolean | Whether the request succeeded |
+| result.result[0].modulation_unit| string | the modulation unit QAM |
+<!-- | result.result[0].pol| string |required when type is S. the SAT Polarization  LEFT/RIGHT/HOR/VER |
+| result.result[0].mode| string | actual FE Type detecting Mode. AUTO |
+| result.result[0].hierarchy| string | hierarchy info |-->
+| result.success | boolean | Whether the request succeeded | 
 
 ### Example
 
@@ -122,7 +126,10 @@ Returns the frequency list from cable/sat/T or the data saved by the user
 {
     "jsonrpc": "2.0",
     "id": 1234567890,
-    "method": "org.rdk.Cable.1.getCableFrequencyList"
+    "method": "org.rdk.Cable.1.getFrequencyList",
+    "params":{
+      "type":"S"
+    }
 }
 ```
 
@@ -141,7 +148,7 @@ Returns the frequency list from cable/sat/T or the data saved by the user
           "modulation" : "16",
           "frequency_unit" : "Mhz",
           "symbolRate_unit" : "ks/s",
-          "modulation_unit" : "QAM"
+          "modulation_unit" : "QAM",
           },
           {
             "id":222222,
@@ -150,7 +157,7 @@ Returns the frequency list from cable/sat/T or the data saved by the user
             "modulation" : "16",
             "frequency_unit" : "Mhz",
             "symbolRate_unit" : "ks/s",
-            "modulation_unit" : "QAM"
+            "modulation_unit" : "QAM",
           },
         ],
       "success": true
@@ -161,7 +168,7 @@ Returns the frequency list from cable/sat/T or the data saved by the user
 <a name="method.addNewFrequency"></a>
 ## *addNewFrequency <sup>method</sup>*
 
-Add new frequency to cable Frequency list
+Add new frequency to  Frequency list
 
 ### Parameters
 
@@ -169,6 +176,8 @@ Add new frequency to cable Frequency list
 | :-------- | :-------- | :-------- |
 | params | object |  |
 | params.type | string | type to add new frequency cable/sat/T  |
+| params.SatId| string | required when type is S/T |
+| params.pol| string | Polarization, required when type is S/T |
 | params.frequency | string | The new frequency  ex: range 0~5000 |
 | params.symbolRate | string | The new symbolRate ex: range 0~5000 |
 | params.modulation | string | The new modulation |
@@ -192,10 +201,11 @@ Add new frequency to cable Frequency list
     "id": 1234567890,
     "method": "org.rdk.Cable.1.addNewFrequency",
      "params": {
-     	"type":"sat",
-        "frequency": "432",
-        "symbolRate": "432",
-        "modulation": "432",
+       "type":"S",
+       "SatId":"T-800",
+       "frequency": "432",
+       "symbolRate": "432",
+       "modulation": "432",
     }
 }
 ```
@@ -217,7 +227,7 @@ Add new frequency to cable Frequency list
 <a name="method.deleteFrequency"></a>
 ## *deleteFrequency <sup>method</sup>*
 
-Attempts to delete the frequency from cable list
+Attempts to delete the frequency
 
 ### Parameters
 
@@ -260,55 +270,6 @@ Attempts to delete the frequency from cable list
   }
 }
 ```
-
-<a name="method.getSignalStatus"></a>
-## *getSignalStatus <sup>method</sup>*
-
-get signalLevel / signalQuality
-
-### Parameters
-
-This method takes no parameters.
-
-### Result
-
-| Name | Type | Description |
-| :-------- | :-------- | :-------- |
-| result | object |  |
-| result.result | object | The result of the SignalStatus |
-| result.result.isLocked | boolean | |
-| result.result.signalQuality | number | |
-| result.result.signalLevel | number | |
-| result.success | boolean | Whether the request succeeded |
-
-### Example
-
-#### Request
-
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 1234567890,
-  "method": "org.rdk.Cable.1.getSignalStatus"
-}
-```
-
-#### Response
-
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 1234567890,
-  "result": {
-    "result": {
-      "signalStrength":80,
-      "signalLevel":55
-    },
-  "success": true
-  }
-}
-```
-
 <a name="method.updateFrequency"></a>
 ## *updateFrequency <sup>method</sup>*
 
@@ -322,6 +283,7 @@ when user change frequency infomation
 | params.frequency | string | The new frequency |
 | params.symbolRate | string | The new symbolRate |
 | params.modulation | string | The new modulation |
+| params.pol| string | Polarization, required when type is S/T |
 
 ### Result
 
@@ -343,7 +305,8 @@ when user change frequency infomation
     "id":11223,
     "frequency":"421",
     "symbolRate":"5668",
-    "modulation":"128"
+    "modulation":"128",
+    "pol":"LEFT"
   }
 }
 ```
@@ -359,6 +322,68 @@ when user change frequency infomation
   }
 }
 ```
+
+<a name="method.getSignalStatus"></a>
+## *getSignalStatus <sup>method</sup>*
+
+get signaStrength / signalQuality in dB/dBuV or percentag
+
+### Parameters
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| params | object |  |
+| params.TunerID | number | TunerID|
+
+### Result
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| result | object |  |
+| result.result | object | The result of the SignalStatus |
+| result.result.LockeState | boolean | |
+| result.result.signalQuality | number | Signal quality, i.e. SNR, signal-to-noise ratio, in dB.  |
+| result.result.signaStrength | number | Signal strength, in dBuV. |
+| result.result.SignalStrengthPercentage | number | Signal strength, in percentag. |
+| result.result.SignalQualityPercentage | number | Signal quality, i.e. SNR, signal-to-noise ratio, in percentag. |
+| result.result.nBER | number |  |
+| result.result.nBERPercentage | number | |
+| result.success | boolean | Whether the request succeeded |
+
+### Example
+
+#### Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "method": "org.rdk.Cable.1.getSignalStatus",
+  "params":{
+    "TunerID":"156465"
+  }
+}
+```
+
+#### Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": {
+    "result": {
+      "LockeState":true,
+      "signalStrength":80,
+      "signalQuality":55,
+      "nBER":1216
+    },
+  "success": true
+  }
+}
+```
+
+
 <a name="method.startSearch"></a>
 ## *startSearch <sup>method</sup>*
 
