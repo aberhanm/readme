@@ -79,16 +79,19 @@ WifiManager interface methods:
 
 | Method | Description |
 | :-------- | :-------- |
+
 | [getFrequencyList](#method.getFrequencyList) | Returns the frequency list from cable/sat/T |
-| [addNewFrequency](#method.addNewFrequency) | add new search frequency |
+| [addFrequency](#method.addFrequency) | add new search frequency |
 | [deleteFrequency](#method.deleteFrequency) | delete useless frequency |
-| [updateFrequency](#method.updateFrequency) | Returns the current Wifi state |
+| [updateFrequency](#method.updateFrequency) | update frequency by id|
 | [getSignalStatus](#method.getSignalStatus) | Returns frequency information like quality and level |
+| [getsatelliteList](#method.getsatelliteList) | Returns the array of satellites defined in the database. |
+| [addSatellite](#method.addSatellite) | Add a new satellite to the database |
 | [createSearch](#method.createSearch) | Returns the searchID used for mutil Tuner |
 | [setSearchParam](#method.setSearchParam) | set Search Config |
-| [startSearch](#method.startSearch) |  |
-| [stopSearch](#method.stopSearch) | |
-| [destorySearch](#method.destorySearch) | |
+| [startSearch](#method.startSearch) | start search with all choosed frequency |
+| [stopSearch](#method.stopSearch) | stop search |
+| [destorySearch](#method.destorySearch) | destory search |
 
 
 <a name="method.getFrequencyList"></a>
@@ -110,13 +113,14 @@ Returns the frequency list from cable/sat/T or the data saved by the user
 | :-------- | :-------- | :-------- |
 | result | object |  |
 | result.result | array | The result of the frequency list |
-| result.result[0].id| string | the frequency id |
-| result.result[0].frequency| string | the frequency |
-| result.result[0].frequency_unit| string | the frequency unit Khz、Mhz、Ghz|
-| result.result[0].symbolRate| string | the symbolRate |
-| result.result[0].symbolRate_unit| string | the symbolRate unit MS/s、MB/s、Ks/s|
-| result.result[0].modulation| string | the modulation |
-| result.result[0].modulation_unit| string | the modulation unit QAM |
+| result.result[#].id| string | the frequency id |
+| result.result[#].frequencyKhz| string | the frequency (Khz、Mhz、Ghz)|
+| result.result[#].symbolRateSps| string | the symbolRate(MS/s、MB/s、Ks/s) |
+| result.result[#].modulation| string | the modulation( QAM) |
+| result.result[#].polarzation| string | return pol when type is S |
+| result.result[#].bandwidth| string | return bandwidth when type is S |
+| result.result[#].mode| string | AUTO: FE Type detecting Mode.return when type is T |
+| result.result[#].hierarchy| string | hierarchy info. return when type is T |
 | result.success | boolean | Whether the request succeeded | 
 
 ### Example
@@ -129,7 +133,8 @@ Returns the frequency list from cable/sat/T or the data saved by the user
     "id": 1234567890,
     "method": "org.rdk.Cable.1.getFrequencyList",
     "params":{
-      "type":"S"
+      "type":"S",
+      "SatId":"d5fdsd6s576"
     }
 }
 ```
@@ -144,21 +149,16 @@ Returns the frequency list from cable/sat/T or the data saved by the user
       "result": [
         {
           "id":11111,
-          "frequency" : "417",
-          "symbolRate" : "5017",
-          "modulation" : "16",
-          "frequency_unit" : "Mhz",
-          "symbolRate_unit" : "ks/s",
-          "modulation_unit" : "QAM",
+          "frequencyKhz" : "417",
+          "symbolRateSps" : "5017",
+          "polarzation":"ver"
           },
           {
             "id":222222,
-            "frequency" : "417",
-            "symbolRate" : "5017",
+            "frequencyKhz" : "417",
+            "symbolRateSps" : "5017",
             "modulation" : "16",
-            "frequency_unit" : "Mhz",
-            "symbolRate_unit" : "ks/s",
-            "modulation_unit" : "QAM",
+            "polarzation":"ver"
           },
         ],
       "success": true
@@ -166,8 +166,8 @@ Returns the frequency list from cable/sat/T or the data saved by the user
 }
 ```
 
-<a name="method.addNewFrequency"></a>
-## *addNewFrequency <sup>method</sup>*
+<a name="method.addFrequency"></a>
+## *addFrequency <sup>method</sup>*
 
 Add new frequency to  Frequency list
 
@@ -177,11 +177,14 @@ Add new frequency to  Frequency list
 | :-------- | :-------- | :-------- |
 | params | object |  |
 | params.type | string | type to add new frequency cable/sat/T  |
-| params.SatId| string | required when type is S/T |
-| params.pol| string | Polarization, required when type is S/T |
-| params.frequency | string | The new frequency  ex: range 0~5000 |
-| params.symbolRate | string | The new symbolRate ex: range 0~5000 |
+| params.SatId| string | required when type is S|
+| params.frequencyKhz | string | The new frequency  ex: range 0~5000 |
+| params.symbolRateSps | string | The new symbolRate ex: range 0~5000 |
 | params.modulation | string | The new modulation |
+| params.polarzation| string |  required when type is S|
+| params.bandwidth| string |  required when type is T|
+| params.mode| string | required when type is T|
+| params.hierarchy| string | required when type is T|
 
 
 ### Result
@@ -200,13 +203,14 @@ Add new frequency to  Frequency list
 {
     "jsonrpc": "2.0",
     "id": 1234567890,
-    "method": "org.rdk.Cable.1.addNewFrequency",
+    "method": "org.rdk.Cable.1.addFrequency",
      "params": {
        "type":"S",
        "SatId":"T-800",
-       "frequency": "432",
-       "symbolRate": "432",
+       "frequencyKhz": "432",
+       "symbolRateSps": "432",
        "modulation": "432",
+       "polarzation":"ver"
     }
 }
 ```
@@ -281,10 +285,14 @@ when user change frequency infomation
 | :-------- | :-------- | :-------- |
 | params | object |  |
 | params.id | string | The change frequency id |
-| params.frequency | string | The new frequency |
-| params.symbolRate | string | The new symbolRate |
+| params.frequencyKhz | string | The new frequency |
+| params.symbolRateSps | string | The new symbolRate |
 | params.modulation | string | The new modulation |
-| params.pol| string | Polarization, required when type is S/T |
+| params.polarzation| string | required when type is S |
+| params.bandwidth| string |  required when type is T|
+| params.mode| string | required when type is T|
+| params.hierarchy| string | required when type is T|
+
 
 ### Result
 
@@ -304,10 +312,10 @@ when user change frequency infomation
   "method": "org.rdk.Cable.1.updateFrequency",
   "params":{
     "id":11223,
-    "frequency":"421",
-    "symbolRate":"5668",
+    "frequencyKhz":"421",
+    "symbolRateSps":"5668",
     "modulation":"128",
-    "pol":"LEFT"
+    "polarzation":"LEFT"
   }
 }
 ```
@@ -383,6 +391,172 @@ get signaStrength / signalQuality in dB/dBuV or percentag
   }
 }
 ```
+<a name="method.getsatelliteList"></a>
+## *getsatelliteList <sup>property</sup>*
+
+Provides access to the returns the array of satellites defined in the database.
+
+> This property is **read-only**.
+
+### Value
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| result | array | Returns the array of satellites defined in the database |
+| result[#] | object |  |
+| result[#].name | string |  |
+| result[#].longitude | number | Longitudinal location of the satellite in 1/10ths of a degree, with an east coordinate given as a positive value and a west coordinate as negative. Astra 28.2E would be defined as 282 and Eutelsat 5.0W would be -50 |
+| result[#].lnb | string | Name of the LNB settings to be used when tuning to this satellite |
+
+### Example
+
+#### Get Request
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1234567890,
+    "method": "org.rdk.Cable.1.getsatelliteList"
+}
+```
+
+#### Get Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": [
+    {
+      "name": "Astra 28.2E",
+      "longitude": 282,
+      "lnb": "Universal"
+    }
+  ]
+}
+```
+<a name="method.addSatellite"></a>
+## *addSatellite <sup>method</sup>*
+
+Add a new satellite.
+
+### Parameters
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| params | object |  |
+| params.name | string |  |
+| params.longitude | number | Longitudinal location of the satellite in 1/10ths of a degree, with an east coordinate given as a positive value and a west coordinate as negative. Astra 28.2E would be defined as 282 and Eutelsat 5.0W would be -50 |
+| params.lnb | string | Name of the LNB settings to be used when tuning to this satellite |
+
+### Result
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| result | boolean | true if the satellite is added, false otherwise |
+
+### Example
+
+#### Request
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1234567890,
+    "method": "org.rdk.Cable.1.addSatellite",
+    "params": {
+      "name": "Astra 28.2E",
+      "longitude": 282,
+      "lnb": "Universal"
+    }
+}
+```
+
+#### Response
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1234567890,
+    "result": true
+}
+```
+
+<a name="method.GetSatInfo"></a>
+## *GetSatInfo <sup>method</sup>*
+
+get GetSatInfo
+
+### Parameters
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| params | object |  |
+| params.SatId | number | |
+
+### Result
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| result | object |  |
+| result.result | object | The result of the SignalStatus |
+| result.result.LnbIndex | boolean |卫星参数配置 |
+| result.result.NetType | string | < Net type, S/T */ |
+| result.result.SatelliteDegree | number | 0~3600. |
+| result.result.MotorPosition | number | Motor Position. 0、1、2.... |
+| result.result.MotorType | number | 0- NONE / 1-1.2 /2-1.3 Motor Type. |
+| result.result.DiSEqCType | string | DiSEqC Type 0- NONE / 1-toneburst  |
+| result.result.DiSEqCPort | number | |
+| result.result.SwitchPower | number |switch power. 0-off 1-on |
+| result.result.SwitchVoltage | number | switch voltage. 0-off 1-13v/2-14v/3-18v/4-19v |
+| result.result.Switch22K | number | 22KHZ Switch 0-Disable，1-Enable. |
+| result.result.stTunerConnect | number | |
+| result.result.TunerIndex | number | || result.result.DiSEqCPort | number | |
+| result.result.szNetName[BLL_DM_MAX_NETNAME_LEN + 1] | number | Net name|
+| result.success | boolean | Whether the request succeeded |
+
+### Example
+
+#### Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "method": "org.rdk.Cable.1.getSignalStatus",
+  "params":{
+    "SatId":"156465"
+  }
+}
+```
+
+#### Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": {
+    "result": {
+      "LnbIndex":true,
+      "NetType":"S",
+      "SatelliteDegree":55,
+      "MotorPosition":5,
+      "MotorType":1,
+      "DiSEqCType":1,
+      "DiSEqCPort":0,
+      "SwitchPower":1,
+      "SwitchVoltage":1,
+      "Switch22K":0,
+      "stTunerConnect":10,
+      "TunerIndex":55,
+      "szNetName":1216
+    },
+  "success": true
+  }
+}
+```
+
 
 <a name="method.createSearch"></a>
 ## *createSearch <sup>method</sup>*
@@ -508,18 +682,18 @@ set some search config
 <a name="method.startSearch"></a>
 ## *startSearch <sup>method</sup>*
 
-Returns the channel List.  
+search all choosed frequency 
 
 ### Parameters
 
 | Name | Type | Description |
 | :-------- | :-------- | :-------- |
 | params | array |  |
-| params[0] | object |  |
-| result.params[0].id | string | frequency id |
-| result.params[0].frequency | string | |
-| result.params[0].symbolRate | string |  |
-| result.params[0].mofulation | string |  |
+| params[#] | object |  |
+| result.params[#].id | string | frequency id |
+| result.params[#].frequencyKhz | string | |
+| result.params[#].symbolRateSps | string |  |
+| result.params[#].modulation | string |  |
 
 ### Result
 
@@ -541,14 +715,14 @@ Returns the channel List.
   "params":[
     {
       "id":11223,
-      "frequency":"421",
-      "symbolRate":"5668",
+      "frequencyKhz":"421",
+      "symbolRateSps":"5668",
       "modulation":"128"
     },
     {
       "id":11223,
-      "frequency":"421",
-      "symbolRate":"5668",
+      "frequencyKhz":"421",
+      "symbolRateSps":"5668",
       "modulation":"128"
     }
   ]
@@ -611,6 +785,50 @@ stopsearch
 }
 ```
 
+<a name="method.destorySearch"></a>
+## *destorySearch <sup>method</sup>*
+
+destorySearch
+
+### Parameters
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| params | object |  |
+| params.searchID | string | searchID |
+
+### Result
+
+| Name | Type | Description |
+| :-------- | :-------- | :-------- |
+| result | object |  |
+| result.success | boolean | Whether the request succeeded |
+
+#### Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "method": "org.rdk.Cable.1.destorySearch ",
+  "params":{
+    "searchID":"15646"
+  }
+}
+```
+
+#### Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1234567890,
+  "result": {
+    "success": true
+  }
+}
+```
+
 <a name="head.Notifications"></a>
 # Notifications
 
@@ -636,7 +854,6 @@ Triggered when finish signle frenquency search
 {
   "jsonrpc": "2.0",
   "method": "client.events.1.onSearchStateChanged",
-  "params": {}
 }
 ```
 
@@ -650,9 +867,13 @@ Triggered when finish signle frenquency search
     "result":{
       "id":"5424",
       "name":"cctv1",
-      "video":"gfdgyewtreg.mp4",
-      "audio":"gdheg.mp3",
-      "subtitle":"cctv1",
+      "video_pid":"8191",
+      "audio_pid":"8191",
+      "frequencyKhz":"10992",
+      "symbolRateSps":"27500",
+      "service_id":"8557",
+      "PCR_pid":"8191",
+      "subTitle_pid":"0"
     },
     "success": true
   }
