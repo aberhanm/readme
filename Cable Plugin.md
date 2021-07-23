@@ -92,7 +92,6 @@ WifiManager interface methods:
 | [stopSearch](#method.stopSearch) | stop search |
 | [destorySearch](#method.destorySearch) | destory search |
 
-
 <a name="method.getFrequencyList"></a>
 ## *getFrequencyList <sup>method</sup>*
 
