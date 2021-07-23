@@ -79,14 +79,14 @@ WifiManager interface methods:
 
 | Method | Description |
 | :-------- | :-------- |
-
+| [addLnb](#method.addLnb) | Add a new LNB to the database |
+| [addSatellite](#method.addSatellite) | Add a new satellite to the database |
 | [getFrequencyList](#method.getFrequencyList) | Returns the frequency list from cable/sat/T |
 | [addFrequency](#method.addFrequency) | add new search frequency |
 | [deleteFrequency](#method.deleteFrequency) | delete useless frequency |
-| [updateFrequency](#method.updateFrequency) | update frequency by id|
+| [updateFrequency](#method.updateFrequency) | Returns the current Wifi state |
 | [getSignalStatus](#method.getSignalStatus) | Returns frequency information like quality and level |
-| [getsatelliteList](#method.getsatelliteList) | Returns the array of satellites defined in the database. |
-| [addSatellite](#method.addSatellite) | Add a new satellite to the database |
+| [satelliteList](#method.satelliteList) | Returns the array of satellites defined in the database. |
 | [createSearch](#method.createSearch) | Returns the searchID used for mutil Tuner |
 | [setSearchParam](#method.setSearchParam) | set Search Config |
 | [startSearch](#method.startSearch) | start search with all choosed frequency |
