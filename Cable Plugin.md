@@ -78,7 +78,7 @@ The following methods are provided by the org.rdk.Cable plugin:
 WifiManager interface methods:
 
 | Method | Description |
-| :-------- | :-------- |
+| :-------- | :-------- ||
 
 | [getFrequencyList](#method.getFrequencyList) | Returns the frequency list from cable/sat/T |
 | [addFrequency](#method.addFrequency) | add new search frequency |
