@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Pirata+One|Rubik:900');
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      background: linear-gradient(#1a0f19, #16121c);
+    }
+
+    svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .container {
+      position: absolute;
+      width: 434px;
+      height: 600px;
+      top: 0;
+      left: -58px;
+    }
+
+
+    .line {
+      --colorA: #ed194e;
+      fill: none;
+      stroke-width: 10;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      stroke: #fff;
+      stroke-dasharray: 328 600;
+      animation: rotate 2s infinite linear;
+      filter:
+        drop-shadow(0 0 2px var(--colorA)) drop-shadow(0 0 5px var(--colorA)) drop-shadow(0 0 10px var(--colorA)) drop-shadow(0 0 15px var(--colorA)) drop-shadow(0 0 25px var(--colorA));
+    }
+
+    .line2 {
+      animation: rotate 2s infinite -1s linear;
+      --colorA: #37c1ff;
+    }
+
+    @keyframes rotate {
+      0% {
+        stroke-dashoffset: 0;
+      }
+
+      100% {
+        stroke-dashoffset: 928;
+      }
+    }
+
+    .span {
+      text-align: center;
+      width: 375px;
+      height: 600px;
+      line-height: 478px;
+    }
+
+    .text {
+      color: white;
+    }
+
+    h2 {
+      margin-top: -1.15em;
+      font-family: 'Pirata One', cursive;
+      font-size: 3rem;
+      color: yellow;
+      text-align: center;
+    }
+
+    h2 spam {
+      font-size: .5em;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="span">
+    <span class="text">
+      <h2>黄越</h2>
+    </span>
+  </div>
+  <div class="container">
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <path d="M 400 160 A 2 2 90 0 0 260 160 A 2 2 90 0 0 120 160 C 120 230 260 270 260 350 C 260 270 400 230 400 160"
+        class="line" />
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <path d="M 400 160 A 2 2 90 0 0 260 160 A 2 2 90 0 0 120 160 C 120 230 260 270 260 350 C 260 270 400 230 400 160"
+        class="line line2" />
+    </svg>
+  </div>
+</body>
+
+</html>
